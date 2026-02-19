@@ -110,8 +110,14 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           const SizedBox(width: 16),
           // Cover size slider (grid mode only)
           if (viewMode == LibraryViewMode.grid) ...[
+            const Text(
+              'Cover size',
+              style: TextStyle(fontSize: 12),
+            ),
+            const SizedBox(width: 8),
             const Icon(Icons.photo_size_select_small, size: 16),
-            Expanded(
+            SizedBox(
+              width: 180,
               child: Slider(
                 value: coverSize,
                 min: 100,

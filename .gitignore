@@ -10,6 +10,7 @@
 .svn/
 mvnw
 mvnw.cmd
+.cursor
 
 # Flutter/Dart
 .dart_tool/

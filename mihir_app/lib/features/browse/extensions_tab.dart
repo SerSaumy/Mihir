@@ -3,10 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/extensions/models/extension.dart';
 import '../../core/extensions/models/extension_repo_item.dart';
 import '../../core/providers/extension_repository_provider.dart';
+import '../../core/providers/http_provider.dart';
+import '../../core/providers/database_provider.dart';
+import '../../core/extensions/loader/extension_manager.dart';
 import 'extension_install_dialog.dart';
 
 final extensionsProvider = FutureProvider<List<MihirExtension>>((ref) async {
-  return [];
+  final db = ref.watch(databaseProvider);
+  final httpClient = ref.watch(httpClientProvider);
+  final manager = ExtensionManager(db: db, httpClient: httpClient);
+  return manager.getInstalledExtensions();
 });
 
 class ExtensionsTab extends ConsumerWidget {
@@ -156,13 +162,29 @@ class ExtensionsTab extends ConsumerWidget {
                   ],
                 ),
                 trailing: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => ExtensionInstallDialog(
-                        extension: ext,
-                      ),
+                  onPressed: () async {
+                    final messenger = ScaffoldMessenger.of(context);
+                    messenger.showSnackBar(
+                      SnackBar(content: Text('Installing ${ext.name}...')),
                     );
+                    try {
+                      final db = ref.read(databaseProvider);
+                      final httpClient = ref.read(httpClientProvider);
+                      final manager =
+                          ExtensionManager(db: db, httpClient: httpClient);
+                      await manager.installFromRepo(ext);
+                      ref.invalidate(extensionsProvider);
+                      messenger.showSnackBar(
+                        SnackBar(content: Text('Installed ${ext.name}')),
+                      );
+                    } catch (e) {
+                      messenger.showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('Failed to install ${ext.name}: $e'),
+                        ),
+                      );
+                    }
                   },
                   child: const Text('Install'),
                 ),
