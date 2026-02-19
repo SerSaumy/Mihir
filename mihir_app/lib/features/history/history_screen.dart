@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/manga.dart';
 import '../../core/models/chapter.dart';
 import '../../widgets/manga_cover.dart';
-import '../library/manga_detail_screen.dart';
 import '../reader/reader_screen.dart';
 
 class HistoryItem {

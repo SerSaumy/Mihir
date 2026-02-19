@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 // Manga table
+@DataClassName('DbManga')
 class Mangas extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get url => text()();
@@ -29,6 +30,7 @@ class Mangas extends Table {
 }
 
 // Chapter table
+@DataClassName('DbChapter')
 class Chapters extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get mangaId => integer()();
@@ -47,6 +49,7 @@ class Chapters extends Table {
 }
 
 // Page table
+@DataClassName('DbPage')
 class Pages extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get chapterId => integer()();
@@ -60,6 +63,7 @@ class Pages extends Table {
 }
 
 // Extension table
+@DataClassName('DbExtension')
 class Extensions extends Table {
   TextColumn get pkgName => text()();
   TextColumn get name => text()();
@@ -74,6 +78,7 @@ class Extensions extends Table {
 }
 
 // Source table
+@DataClassName('DbSource')
 class Sources extends Table {
   TextColumn get id => text()();
   TextColumn get name => text()();
@@ -84,6 +89,7 @@ class Sources extends Table {
 }
 
 // Category table
+@DataClassName('DbCategory')
 class Categories extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
@@ -92,6 +98,7 @@ class Categories extends Table {
 }
 
 // Manga-Category junction table
+@DataClassName('DbMangaCategory')
 class MangaCategories extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get mangaId => integer()();
@@ -99,6 +106,7 @@ class MangaCategories extends Table {
 }
 
 // Track table (for tracker integrations)
+@DataClassName('DbTrack')
 class Tracks extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get mangaId => integer()();
@@ -113,6 +121,7 @@ class Tracks extends Table {
 }
 
 // History table
+@DataClassName('DbHistory')
 class History extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get mangaId => integer()();
@@ -122,6 +131,7 @@ class History extends Table {
 }
 
 // Downloads table
+@DataClassName('DbDownload')
 class Downloads extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get chapterId => integer()();

@@ -82,7 +82,7 @@ class MangaDao extends DatabaseAccessor<AppDatabase> with _$MangaDaoMixin {
   }
 
   // Helper: Convert table row to Manga model
-  Manga _mangaFromRow(MangasData row) {
+  Manga _mangaFromRow(DbManga row) {
     return Manga(
       id: row.id,
       url: row.url,

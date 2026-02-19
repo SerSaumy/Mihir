@@ -39,7 +39,25 @@ class OnboardingScreen extends StatelessWidget {
                       color: Colors.grey,
                     ),
               ),
-              const SizedBox(height: 48),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: 220,
+                child: OutlinedButton.icon(
+                  onPressed: () async {
+                    // TODO: Open file picker for .tachibk and import
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Go to Settings → Backup and Restore to import a Mihon backup',
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.upload_file),
+                  label: const Text('Import from Mihon'),
+                ),
+              ),
+              const SizedBox(height: 24),
               SizedBox(
                 width: 200,
                 child: ElevatedButton(

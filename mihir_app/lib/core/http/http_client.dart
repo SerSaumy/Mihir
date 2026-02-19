@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:flutter/foundation.dart';
 
 class AppHttpClient {
   late final Dio _dio;
@@ -25,7 +26,7 @@ class AppHttpClient {
     _dio.interceptors.add(LogInterceptor(
       requestBody: true,
       responseBody: true,
-      logPrint: (object) => print(object),
+      logPrint: (object) => debugPrint(object.toString()),
     ));
   }
 

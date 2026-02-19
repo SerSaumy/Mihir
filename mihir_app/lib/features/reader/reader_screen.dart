@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/models/chapter.dart';
-import '../../core/models/page.dart';
 import '../../core/providers/chapter_provider.dart';
 
 final readerPageProvider = StateProvider<int>((ref) => 0);
@@ -36,7 +35,6 @@ class ReaderScreen extends ConsumerStatefulWidget {
 
 class _ReaderScreenState extends ConsumerState<ReaderScreen> {
   final PageController _pageController = PageController();
-  bool _toolbarVisible = true;
 
   @override
   void initState() {

@@ -9,7 +9,6 @@ import 'features/history/history_screen.dart';
 import 'features/settings/settings_screen.dart';
 import 'features/updates/updates_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
-import 'widgets/app_logo.dart';
 
 class MihirApp extends StatelessWidget {
   const MihirApp({super.key});

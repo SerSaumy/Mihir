@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 class AppLogo extends StatelessWidget {
   final double? size;

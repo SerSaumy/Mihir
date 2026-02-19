@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.0.0)'
+        required: true
+        default: '1.0.0'
 
 jobs:
   build:
@@ -28,7 +33,7 @@ jobs:
       - name: Generate code
         run: |
           cd mihir_app
-          flutter pub run build_runner build --delete-conflicting-outputs
+          dart run build_runner build --delete-conflicting-outputs
       
       - name: Build Windows release
         run: |
@@ -36,16 +41,33 @@ jobs:
           flutter build windows --release
       
       - name: Create release archive
+        id: archive
         shell: pwsh
         run: |
-          $version = $env:GITHUB_REF -replace 'refs/tags/v', ''
-          if ([string]::IsNullOrEmpty($version)) { $version = "1.0.0" }
+          $version = "1.0.0"
+          if ("${{ github.event.inputs.version }}" -ne "") {
+            $version = "${{ github.event.inputs.version }}"
+          } elseif ($env:GITHUB_REF -match "refs/tags/v(.+)") {
+            $version = $matches[1]
+          }
+          echo "version=$version" >> $env:GITHUB_OUTPUT
           Compress-Archive -Path "mihir_app\build\windows\x64\runner\Release\*" -DestinationPath "mihir-windows-$version.zip" -Force
       
-      - name: Upload release
-        uses: softprops/action-gh-release@v2
+      - name: Upload release (tag push)
         if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
         with:
+          files: mihir-windows-*.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release (manual)
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.archive.outputs.version }}
+          name: Mihir v${{ steps.archive.outputs.version }}
           files: mihir-windows-*.zip
           generate_release_notes: true
         env:

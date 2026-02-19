@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/chapter.dart';
-import '../database/app_database.dart';
 import '../providers/database_provider.dart';
 
 // Provider for chapters by manga

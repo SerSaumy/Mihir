@@ -39,8 +39,8 @@ class ChapterDao extends DatabaseAccessor<AppDatabase> with _$ChapterDaoMixin {
   Future<void> insertChapters(List<Chapter> chapters) async {
     await batch((batch) {
       batch.insertAllOnConflictUpdate(
-        chapters,
-        _chapterToRow,
+        this.chapters,
+        chapters.map(_chapterToRow).toList(),
       );
     });
   }
@@ -103,7 +103,7 @@ class ChapterDao extends DatabaseAccessor<AppDatabase> with _$ChapterDaoMixin {
     return row != null ? _chapterFromRow(row) : null;
   }
 
-  Chapter _chapterFromRow(ChaptersData row) {
+  Chapter _chapterFromRow(DbChapter row) {
     return Chapter(
       id: row.id,
       mangaId: row.mangaId,

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/extensions/models/extension.dart';
+import '../../core/extensions/models/extension_repo_item.dart';
+import '../../core/providers/extension_repository_provider.dart';
 import 'extension_install_dialog.dart';
 
-// TODO: Replace with actual provider
 final extensionsProvider = FutureProvider<List<MihirExtension>>((ref) async {
-  return [];
-});
-
-final availableExtensionsProvider = FutureProvider<List<Map<String, dynamic>>>((ref) async {
-  // TODO: Fetch from extension repository
   return [];
 });
 
@@ -127,28 +123,36 @@ class ExtensionsTab extends ConsumerWidget {
   Widget _buildBrowseTab(
     BuildContext context,
     WidgetRef ref,
-    AsyncValue<List<Map<String, dynamic>>> availableAsync,
+    AsyncValue<List<ExtensionRepoItem>> availableAsync,
   ) {
     return availableAsync.when(
       data: (extensions) {
         if (extensions.isEmpty) {
-          return const Center(child: Text('No extensions available'));
+          return const Center(
+            child: Text('No extensions available\nCheck your internet connection'),
+          );
         }
 
         return ListView.builder(
           padding: const EdgeInsets.all(8),
           itemCount: extensions.length,
           itemBuilder: (context, index) {
-            final extension = extensions[index];
+            final ext = extensions[index];
             return Card(
               margin: const EdgeInsets.symmetric(vertical: 4),
               child: ListTile(
-                title: Text(extension['name'] ?? 'Unknown'),
+                leading: const Icon(Icons.extension),
+                title: Text(ext.name),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Language: ${extension['lang'] ?? 'Unknown'}'),
-                    Text('Sources: ${extension['sources'] ?? 0}'),
+                    Text('Language: ${ext.lang} • Version: ${ext.version}'),
+                    Text('${ext.sources.length} source(s)'),
+                    if (ext.isNsfw)
+                      const Chip(
+                        label: Text('NSFW'),
+                        labelStyle: TextStyle(fontSize: 10),
+                      ),
                   ],
                 ),
                 trailing: ElevatedButton(
@@ -156,7 +160,7 @@ class ExtensionsTab extends ConsumerWidget {
                     showDialog(
                       context: context,
                       builder: (context) => ExtensionInstallDialog(
-                        extension: extension,
+                        extension: ext,
                       ),
                     );
                   },
@@ -168,7 +172,19 @@ class ExtensionsTab extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
+      error: (error, stack) => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Failed to load extensions: $error'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => ref.invalidate(availableExtensionsProvider),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

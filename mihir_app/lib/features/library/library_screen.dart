@@ -2,22 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/models/manga.dart';
+import '../../core/providers/library_providers.dart';
 import '../../core/providers/manga_provider.dart';
 import '../../core/providers/category_provider.dart';
-import '../../widgets/manga_cover.dart';
 import '../../widgets/library_sidebar.dart';
 import 'library_grid_view.dart';
 import 'library_list_view.dart';
 import 'library_search_bar.dart';
 import 'library_filter_panel.dart';
-
-enum LibraryViewMode { grid, list }
-
-final libraryViewModeProvider = StateProvider<LibraryViewMode>((ref) => LibraryViewMode.grid);
-final librarySelectedCategoryProvider = StateProvider<int?>((ref) => null);
-final librarySearchQueryProvider = StateProvider<String>((ref) => '');
-final libraryShowFiltersProvider = StateProvider<bool>((ref) => false);
-final libraryCoverSizeProvider = StateProvider<double>((ref) => 150.0);
 
 class LibraryScreen extends ConsumerStatefulWidget {
   const LibraryScreen({super.key});

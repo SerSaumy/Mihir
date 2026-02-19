@@ -1,0 +1,16 @@
+# Created with wingetcreate
+# Run: wingetcreate update mihirreader.mihir -u https://github.com/SerSaumy/mihir/releases/latest -v 1.0.0
+PackageIdentifier: MihirReader.Mihir
+PackageVersion: 1.0.0
+PackageLocale: en-US
+Publisher: Mihir Contributors
+PackageName: Mihir
+License: Apache-2.0
+ShortDescription: A native Windows manga reader — Mihon reimagined for the desktop.
+Installers:
+  - Architecture: x64
+    InstallerType: zip
+    InstallerUrl: https://github.com/SerSaumy/mihir/releases/download/v1.0.0/mihir-windows-1.0.0.zip
+    InstallerSha256: PLACEHOLDER
+ManifestType: default
+ManifestVersion: 1.6.0

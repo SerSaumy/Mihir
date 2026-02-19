@@ -9,7 +9,7 @@ class CategoryDao extends DatabaseAccessor<AppDatabase> with _$CategoryDaoMixin 
   CategoryDao(AppDatabase db) : super(db);
 
   // Get all categories
-  Future<List<CategoriesData>> getAllCategories() async {
+  Future<List<DbCategory>> getAllCategories() async {
     final results = await (select(categories)
           ..orderBy([(c) => OrderingTerm.asc(c.order)]))
         .get();
@@ -17,7 +17,7 @@ class CategoryDao extends DatabaseAccessor<AppDatabase> with _$CategoryDaoMixin 
   }
 
   // Get category by ID
-  Future<CategoriesData?> getCategoryById(int id) async {
+  Future<DbCategory?> getCategoryById(int id) async {
     return await (select(categories)..where((c) => c.id.equals(id))).getSingleOrNull();
   }
 
@@ -87,7 +87,7 @@ class CategoryDao extends DatabaseAccessor<AppDatabase> with _$CategoryDaoMixin 
   }
 
   // Get categories for manga
-  Future<List<CategoriesData>> getCategoriesForManga(int mangaId) async {
+  Future<List<DbCategory>> getCategoriesForManga(int mangaId) async {
     final query = select(categories).join([
       innerJoin(
         mangaCategories,

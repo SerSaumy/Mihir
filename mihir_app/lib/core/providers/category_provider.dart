@@ -3,7 +3,7 @@ import '../database/app_database.dart';
 import '../providers/database_provider.dart';
 
 // Provider for all categories
-final categoriesProvider = FutureProvider((ref) async {
+final categoriesProvider = FutureProvider<List<DbCategory>>((ref) async {
   final db = ref.watch(databaseProvider);
   return await db.categoryDao.getAllCategories();
 });

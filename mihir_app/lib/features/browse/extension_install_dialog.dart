@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../core/extensions/models/extension_repo_item.dart';
 
 class ExtensionInstallDialog extends StatefulWidget {
-  final Map<String, dynamic> extension;
+  final ExtensionRepoItem extension;
 
   const ExtensionInstallDialog({super.key, required this.extension});
 
@@ -15,8 +16,9 @@ class _ExtensionInstallDialogState extends State<ExtensionInstallDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final ext = widget.extension;
     return AlertDialog(
-      title: Text('Install ${widget.extension['name'] ?? 'Extension'}'),
+      title: Text('Install ${ext.name}'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,10 +28,9 @@ class _ExtensionInstallDialogState extends State<ExtensionInstallDialog> {
             const SizedBox(height: 16),
             Text(_status),
           ] else ...[
-          Text('Language: ${widget.extension['lang'] ?? 'Unknown'}'),
-          Text('Sources: ${widget.extension['sources'] ?? 0}'),
-          if (widget.extension['isNsfw'] == true)
-            const Chip(label: Text('NSFW')),
+          Text('Language: ${ext.lang}'),
+          Text('${ext.sources.length} source(s)'),
+          if (ext.isNsfw) const Chip(label: Text('NSFW')),
           ],
         ],
       ),
