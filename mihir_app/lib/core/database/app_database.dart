@@ -40,6 +40,11 @@ class AppDatabase extends _$AppDatabase {
     return MigrationStrategy(
       onCreate: (Migrator m) async {
         await m.createAll();
+        await into(categories).insert(const CategoriesCompanion(
+          name: Value('Default'),
+          order: Value(0),
+          isDefault: Value(true),
+        ));
       },
       onUpgrade: (Migrator m, int from, int to) async {
         // Handle migrations here

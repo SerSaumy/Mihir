@@ -8,13 +8,13 @@
 
 Discover and read manga, webtoons, comics, and more – easier than ever on your Windows desktop. Mihon reimagined for the desktop.
 
-[![GitHub](https://img.shields.io/github/downloads/SerSaumy/mihir/total?label=downloads&labelColor=27303D&color=0D1117&logo=github&logoColor=FFFFFF&style=flat)](https://github.com/SerSaumy/mihir/releases)
-[![CI](https://img.shields.io/github/actions/workflow/status/SerSaumy/mihir/build_release.yml?labelColor=27303D)](https://github.com/SerSaumy/mihir/actions/workflows/build_release.yml)
-[![License: Apache-2.0](https://img.shields.io/github/license/SerSaumy/mihir?labelColor=27303D&color=0877d2)](/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/SerSaumy/mihir/ci.yml?branch=main&label=build&labelColor=27303D)](https://github.com/SerSaumy/mihir/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?labelColor=27303D)](LICENSE)
+[![Downloads](https://img.shields.io/github/downloads/SerSaumy/mihir/total?label=downloads&labelColor=27303D&color=0D1117)](https://github.com/SerSaumy/mihir/releases)
 
 ## Download
 
-[![Mihir Stable](https://img.shields.io/github/release/SerSaumy/mihir.svg?maxAge=3600&label=Stable&labelColor=06599d&color=043b69)](https://github.com/SerSaumy/mihir/releases)
+[![Latest Release](https://img.shields.io/github/v/release/SerSaumy/mihir?label=Stable&labelColor=06599d&color=043b69&sort=semver)](https://github.com/SerSaumy/mihir/releases)
 
 *Requires Windows 10 or higher (x64).*
 

@@ -36,14 +36,17 @@ jobs:
           flutter build windows --release
       
       - name: Create release archive
+        shell: pwsh
         run: |
           $version = $env:GITHUB_REF -replace 'refs/tags/v', ''
+          if ([string]::IsNullOrEmpty($version)) { $version = "1.0.0" }
           Compress-Archive -Path "mihir_app\build\windows\x64\runner\Release\*" -DestinationPath "mihir-windows-$version.zip" -Force
       
       - name: Upload release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: mihir-windows-*.zip
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

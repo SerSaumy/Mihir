@@ -11,21 +11,16 @@ class MangaDao extends DatabaseAccessor<AppDatabase> with _$MangaDaoMixin {
 
   // Get all manga in library
   Future<List<Manga>> getAllManga({int? categoryId}) async {
-    final query = select(mangas)
-      ..where((m) => m.favorite.equals(true));
-
     if (categoryId != null) {
-      query.join([
-        leftOuterJoin(
-          mangaCategories,
-          mangaCategories.mangaId.equalsExp(mangas.id),
-        ),
+      final query = select(mangas).join([
+        innerJoin(mangaCategories, mangaCategories.mangaId.equalsExp(mangas.id)),
       ])
-        ..where(mangaCategories.categoryId.equals(categoryId));
+        ..where(mangas.favorite.equals(true) & mangaCategories.categoryId.equals(categoryId));
+      final results = await query.get();
+      return results.map((row) => _mangaFromRow(row.readTable(mangas))).toList();
     }
-
-    final results = await query.get();
-    return results.map((row) => _mangaFromRow(row.readTable(mangas))).toList();
+    final results = await (select(mangas)..where((m) => m.favorite.equals(true))).get();
+    return results.map((row) => _mangaFromRow(row)).toList();
   }
 
   // Get manga by ID
@@ -60,7 +55,7 @@ class MangaDao extends DatabaseAccessor<AppDatabase> with _$MangaDaoMixin {
   // Add manga to library
   Future<void> addToLibrary(int mangaId) async {
     await (update(mangas)..where((m) => m.id.equals(mangaId)))
-        .write(const MangasCompanion(favorite: Value(true), dateAdded: Value(DateTime.now().millisecondsSinceEpoch)));
+        .write(MangasCompanion(favorite: const Value(true), dateAdded: Value(DateTime.now().millisecondsSinceEpoch)));
   }
 
   // Remove manga from library
@@ -71,12 +66,11 @@ class MangaDao extends DatabaseAccessor<AppDatabase> with _$MangaDaoMixin {
 
   // Search manga
   Future<List<Manga>> searchManga(String query) async {
+    if (query.isEmpty) return getAllManga();
+    final searchPattern = '%$query%';
     final results = await (select(mangas)
           ..where((m) =>
-              m.title.like('%$query%') |
-              m.author.like('%$query%') |
-              m.artist.like('%$query%'))
-          ..where((m) => m.favorite.equals(true)))
+              m.title.like(searchPattern) & m.favorite.equals(true)))
         .get();
     return results.map((row) => _mangaFromRow(row)).toList();
   }
